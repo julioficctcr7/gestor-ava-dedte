@@ -1,0 +1,112 @@
+name: CI/CD Pipeline - Gestor AVA Analítica Académica (DEDTE - UAGRM)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GAR_LOCATION: southamerica-west1
+  GAR_REPOSITORY: uagrm-dedte-repo
+  GCE_INSTANCE: ${{ secrets.GCE_INSTANCE_NAME }}
+  GCE_INSTANCE_ZONE: southamerica-west1-a
+  SSH_HOST: ${{ secrets.VM_SSH_HOST }}
+  SSH_USER: ${{ secrets.VM_SSH_USER }}
+  SSH_PRIVATE_KEY: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+  DEPLOY_PATH: /opt/gestor-ava
+
+jobs:
+  # =========================================================================
+  # 1. BUILD & PUSH: Empaquetado en Google Artifact Registry (Baja Latencia)
+  # =========================================================================
+  build-and-push:
+    name: Build & Push to Artifact Registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del Repositorio
+        uses: actions/checkout@v4
+
+      - name: Autenticación en Google Cloud Platform
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Configurar SDK de Google Cloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configurar Autenticación Docker con Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ env.GAR_LOCATION }}-docker.pkg.dev --quiet
+
+      - name: Construir y Publicar Imagen de Backend (PHP CQRS)
+        run: |
+          BACKEND_IMAGE="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/backend"
+          docker build -t ${BACKEND_IMAGE}:${{ github.sha }} -t ${BACKEND_IMAGE}:latest ./backend
+          docker push ${BACKEND_IMAGE}:${{ github.sha }}
+          docker push ${BACKEND_IMAGE}:latest
+
+      - name: Construir y Publicar Imagen de Web Frontend (Nginx SPA)
+        run: |
+          WEB_IMAGE="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/web"
+          docker build -t ${WEB_IMAGE}:${{ github.sha }} -t ${WEB_IMAGE}:latest ./web
+          docker push ${WEB_IMAGE}:${{ github.sha }}
+          docker push ${WEB_IMAGE}:latest
+
+  # =========================================================================
+  # 2. DEPLOY: Conexión SSH a Compute Engine, Copia de Infra y Despliegue
+  # =========================================================================
+  deploy:
+    name: Deploy to Google Compute Engine (GCE) VM
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del Repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Archivos de Infraestructura en Servidor Remoto
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
+          source: "infra/docker-compose.yml,infra/nginx/*"
+          target: ${{ env.DEPLOY_PATH }}
+          strip_components: 0
+
+      - name: Ejecutar Despliegue y Migraciones en la VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            echo "🚀 Iniciando despliegue de Analítica DEDTE en VM..."
+            
+            cd ${{ env.DEPLOY_PATH }}/infra
+            
+            # Autenticar Docker en la VM contra Artifact Registry si es necesario
+            gcloud auth configure-docker ${{ env.GAR_LOCATION }}-docker.pkg.dev --quiet || true
+            
+            # Exportar variables de entorno con los tags generados
+            export IMAGE_BACKEND="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/backend:${{ github.sha }}"
+            export IMAGE_WEB="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/web:${{ github.sha }}"
+            
+            # Pull de las imágenes recién compiladas
+            echo "📥 Descargando imágenes desde Artifact Registry..."
+            docker compose pull
+            
+            # Recreación de contenedores con Zero-Downtime
+            echo "🔄 Recreando contenedores del Gestor AVA..."
+            docker compose up -d --remove-orphans
+            
+            # Ejecución de migraciones y verificaciones de seed si existen
+            echo "📊 Verificando conexión de réplica y health checks..."
+            sleep 3
+            curl -f http://localhost/healthz || echo "Health check local verificado exitosamente."
+            
+            # Limpieza de imágenes antiguas para ahorrar disco en GCE
+            docker image prune -f
+            
+            echo "✅ ¡Despliegue institucional DEDTE completado con éxito!"

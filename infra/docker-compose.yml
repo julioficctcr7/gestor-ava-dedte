@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------
+  # Backend CQRS: API de Analítica de Alta Velocidad (PHP 8.2-FPM)
+  # -------------------------------------------------------------
+  backend:
+    image: ${IMAGE_BACKEND:-gestor-ava-backend:latest}
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: ava_analitica_backend
+    restart: unless-stopped
+    environment:
+      - MOODLE_DB_HOST=${MOODLE_DB_HOST:-moodle_uagrm_db}
+      - MOODLE_DB_PORT=${MOODLE_DB_PORT:-3306}
+      - MOODLE_DB_NAME=${MOODLE_DB_NAME:-moodle}
+      - MOODLE_DB_USER=${MOODLE_DB_USER:-moodle}
+      - MOODLE_DB_PASS=${MOODLE_DB_PASS:-moodlepass2024}
+    volumes:
+      - ../backend:/var/www/backend
+    networks:
+      - ava_network
+      - moodle_net
+
+  # -------------------------------------------------------------
+  # Frontend Web & Reverse Proxy: Nginx con HTTP/2 y Caching
+  # -------------------------------------------------------------
+  nginx:
+    image: ${IMAGE_WEB:-gestor-ava-web:latest}
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    container_name: ava_analitica_nginx
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8085}:80"
+    volumes:
+      - ../web/index.html:/usr/share/nginx/html/index.html:ro
+      - ../backend:/var/www/backend:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    networks:
+      - ava_network
+
+networks:
+  ava_network:
+    name: ava_network
+    driver: bridge
+  moodle_net:
+    external: true
+    name: moodle-uagrm-clone_default
