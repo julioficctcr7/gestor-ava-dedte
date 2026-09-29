@@ -1,6 +1,8 @@
 # Entorno local y dependencias
 .env
 *.log
+gcp-sa-key.json
+*.key
 vendor/
 node_modules/
 

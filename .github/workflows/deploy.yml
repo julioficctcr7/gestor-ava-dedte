@@ -6,9 +6,11 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  PROJECT_ID: project-e18cb3de-8c18-459c-8c0
   GAR_LOCATION: southamerica-west1
   GAR_REPOSITORY: uagrm-dedte-repo
+  WORKLOAD_IDENTITY_PROVIDER: projects/643780226187/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+  SERVICE_ACCOUNT: github-actions-dedte@project-e18cb3de-8c18-459c-8c0.iam.gserviceaccount.com
   GCE_INSTANCE: ${{ secrets.GCE_INSTANCE_NAME }}
   GCE_INSTANCE_ZONE: southamerica-west1-a
   SSH_HOST: ${{ secrets.VM_SSH_HOST }}
@@ -23,14 +25,18 @@ jobs:
   build-and-push:
     name: Build & Push to Artifact Registry
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout del Repositorio
         uses: actions/checkout@v4
 
-      - name: Autenticación en Google Cloud Platform
+      - name: Autenticación en Google Cloud Platform (Workload Identity Federation)
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.SERVICE_ACCOUNT }}
 
       - name: Configurar SDK de Google Cloud
         uses: google-github-actions/setup-gcloud@v2
