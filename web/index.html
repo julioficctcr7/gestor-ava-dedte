@@ -13,10 +13,13 @@
                 extend: {
                     colors: {
                         uagrm: {
-                            red: '#dc2626',
-                            reddark: '#b91c1c',
+                            red: '#b91c1c',
+                            reddark: '#991b1b',
+                            redlight: '#fee2e2',
                             blue: '#1e3a8a',
-                            bluedark: '#0f172a'
+                            bluedark: '#172554',
+                            bluelight: '#dbeafe',
+                            gold: '#d97706'
                         }
                     }
                 }
@@ -24,71 +27,79 @@
         }
     </script>
 
-    <!-- Chart.js Engine Local / UMD -->
+    <!-- Chart.js Engine -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <!-- FontAwesome / Iconos -->
+    <!-- FontAwesome Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         body { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-        .glass-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 0.75rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); }
+        .glass-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05); }
         .pulse-live { animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+        @media print {
+            header, .no-print, nav, #slicerBar { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .glass-card { box-shadow: none !important; border: 1px solid #ccc !important; }
+        }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen text-gray-800 antialiased">
+<body class="bg-slate-50 min-h-screen text-slate-800 antialiased flex flex-col">
 
     <!-- 1. BARRA INSTITUCIONAL SUPERIOR UAGRM -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo e Identidad Gestión AVA -->
+                <!-- Identidad DEDTE / Gestión AVA -->
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-uagrm-red rounded-lg flex items-center justify-center text-white font-bold text-xl shadow">
+                    <div class="w-10 h-10 bg-uagrm-red rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md">
                         <i class="fa-solid fa-graduation-cap"></i>
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <span class="text-xl font-extrabold text-gray-900 tracking-tight">Gestión AVA</span>
-                            <span class="bg-red-100 text-uagrm-red text-xs font-bold px-2 py-0.5 rounded">v1.3.2</span>
-                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-0.5 rounded flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-green-500 pulse-live"></span> En Línea
+                            <span class="text-xl font-extrabold text-slate-900 tracking-tight">Gestión AVA</span>
+                            <span class="bg-red-100 text-uagrm-red text-xs font-bold px-2 py-0.5 rounded-full">v2.0 DEDTE</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-[11px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-live"></span> Tiempo Real CQRS
                             </span>
                         </div>
-                        <p class="text-xs text-gray-500 hidden sm:block">Dirección de Educación a Distancia y Tecnología Educativa &bull; U.A.G.R.M.</p>
+                        <p class="text-[11px] text-slate-500 hidden sm:block">Dirección de Educación a Distancia y Tecnología Educativa &bull; U.A.G.R.M.</p>
                     </div>
                 </div>
 
-                <!-- Navegación de Pestañas del Portal AVA -->
-                <nav class="hidden md:flex space-x-1 lg:space-x-2 items-center">
-                    <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
-                    <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Cartas Descriptivas</a>
-                    <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Apertura Semestral</a>
-                    <a href="#" class="bg-uagrm-red text-white px-3 py-2 rounded-md text-sm font-bold shadow-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-chart-line"></i> Analítica Académica
+                <!-- Módulos Oficiales del Gestor AVA (Conforme pantalla proyectada en reunión) -->
+                <nav class="hidden lg:flex space-x-1 items-center">
+                    <a href="#" class="text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg text-xs font-semibold">
+                        <i class="fa-regular fa-calendar-check mr-1 text-slate-400"></i> Actualización AVA
                     </a>
-                    <a href="/moodle/" target="_blank" class="bg-blue-800 hover:bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-bold shadow-sm flex items-center gap-1.5 transition">
-                        <i class="fa-solid fa-graduation-cap"></i> Aula Moodle
+                    <a href="#" class="text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg text-xs font-semibold">
+                        <i class="fa-solid fa-chalkboard-user mr-1 text-slate-400"></i> Seguimiento
                     </a>
-                    <button onclick="openDemoModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded-md text-xs font-bold shadow-sm flex items-center gap-1.5 transition">
-                        <i class="fa-solid fa-key"></i> Accesos Demo
-                    </button>
+                    <a href="#" class="text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg text-xs font-semibold">
+                        <i class="fa-regular fa-file-lines mr-1 text-slate-400"></i> Cartas Descriptivas
+                    </a>
+                    <a href="#" class="bg-uagrm-red text-white px-3 py-2 rounded-lg text-xs font-bold shadow flex items-center gap-1.5">
+                        <i class="fa-solid fa-chart-line"></i> Académico (DEDTE)
+                    </a>
+                    <a href="http://34.176.227.247:8080" target="_blank" class="bg-uagrm-blue hover:bg-uagrm-bluedark text-white px-3 py-2 rounded-lg text-xs font-bold shadow flex items-center gap-1.5 transition ml-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Aula Moodle 5.1
+                    </a>
                 </nav>
 
-                <!-- Usuario y Simulación de Rol Jerárquico (RBAC - RNF-04) -->
+                <!-- Selector de Rol Institucional (RBAC) -->
                 <div class="flex items-center space-x-3">
-                    <div class="text-right hidden sm:block">
-                        <div class="text-xs font-bold text-gray-900" id="currentRoleTitle">Dirección DEDTE Central</div>
-                        <div class="text-[11px] text-gray-500">Sesión Institucional UAGRM</div>
+                    <div class="text-right hidden md:block">
+                        <div class="text-xs font-bold text-slate-900" id="currentRoleTitle">Coordinación DEDTE Central</div>
+                        <div class="text-[11px] text-slate-500">Sesión Institucional UAGRM</div>
                     </div>
-                    <div class="relative">
-                        <select id="roleSelector" onchange="changeRole(this.value)" class="text-xs bg-gray-50 border border-gray-300 rounded-lg p-2 font-semibold text-gray-700 focus:ring-uagrm-red focus:border-uagrm-red">
-                            <option value="central">👑 Rol: DEDTE Central (Macro)</option>
-                            <option value="vicedecanato">🏛️ Rol: Vicedecanato (Facultad)</option>
-                            <option value="dedtef">🛠️ Rol: DEDTEF / UAGD (Técnico)</option>
-                            <option value="carrera" selected>🎓 Rol: Dirección de Carrera (Derecho)</option>
-                            <option value="docente">👨‍🏫 Rol: Docente Titular (Consulta)</option>
+                    <div>
+                        <select id="roleSelector" onchange="changeRole(this.value)" class="text-xs bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg p-2 font-semibold text-slate-800 focus:ring-2 focus:ring-uagrm-red transition cursor-pointer">
+                            <option value="central" selected>👑 DEDTE Central (Global)</option>
+                            <option value="vicedecanato">🏛️ Vicedecanato (Facultad)</option>
+                            <option value="dedtef">🛠️ DEDTE Facultativo / UAGD</option>
+                            <option value="carrera">🎓 Dirección de Carrera</option>
+                            <option value="docente">👨‍🏫 Docente Titular (Consulta)</option>
                         </select>
                     </div>
                 </div>
@@ -96,514 +107,765 @@
         </div>
     </header>
 
-    <!-- 2. SUB-BARRA DE CONTROL: SELECTOR MULTI-PLATAFORMA & GESTIÓN (RF-01, RF-09) -->
-    <div class="bg-gray-800 text-white py-3 border-b border-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center gap-3">
-            <!-- Selector Multi-Plataforma (RF-01) -->
-            <div class="flex items-center space-x-2">
-                <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Plataforma / Origen:</span>
-                <div class="inline-flex rounded-md shadow-sm" role="group">
-                    <button type="button" id="btnPlatVirtual" onclick="setPlatform('virtual')" class="px-3 py-1.5 text-xs font-bold rounded-l-lg bg-uagrm-red text-white focus:z-10">
-                        <i class="fa-solid fa-cloud"></i> Plataforma Virtual Oficial
-                    </button>
-                    <button type="button" id="btnPlatPresencial" onclick="setPlatform('presencial')" class="px-3 py-1.5 text-xs font-semibold rounded-r-lg bg-gray-700 text-gray-300 hover:bg-gray-600 focus:z-10">
-                        <i class="fa-solid fa-chalkboard-user"></i> Apoyo Presencial
-                    </button>
+    <!-- 2. SUB-BARRA DE CONTROL Y SLICERS (Filtros Idénticos al Excel + Moodle) -->
+    <div id="slicerBar" class="bg-slate-900 text-white py-3 px-4 shadow-inner border-b border-slate-800 no-print">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+                <!-- Plataforma -->
+                <div class="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-700">
+                    <span class="text-slate-400 font-medium">Plataforma:</span>
+                    <select id="platformSelect" onchange="applyFilters()" class="bg-transparent text-white font-bold outline-none cursor-pointer">
+                        <option value="virtual" class="bg-slate-900" selected>🌐 Modalidad Virtual</option>
+                        <option value="presencial" class="bg-slate-900">🏛️ Presencial</option>
+                        <option value="extracurricular" class="bg-slate-900">🎓 Extracurricular</option>
+                    </select>
+                </div>
+
+                <!-- Facultad -->
+                <div class="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-700">
+                    <span class="text-slate-400 font-medium">Facultad:</span>
+                    <select id="facultadSelect" onchange="onFacultadChange()" class="bg-transparent text-white font-bold outline-none cursor-pointer max-w-[200px] truncate">
+                        <option value="all" class="bg-slate-900" selected>[Todas las Facultades]</option>
+                        <option value="FCCASGCF" class="bg-slate-900">FCCASGCF (Contables)</option>
+                        <option value="FCJPSRRII" class="bg-slate-900">FCJPSRRII (Jurídicas)</option>
+                        <option value="FICCT" class="bg-slate-900">FICCT (Computación)</option>
+                    </select>
+                </div>
+
+                <!-- Carrera -->
+                <div class="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-700">
+                    <span class="text-slate-400 font-medium">Carrera:</span>
+                    <select id="carreraSelect" onchange="applyFilters()" class="bg-transparent text-white font-bold outline-none cursor-pointer max-w-[220px] truncate">
+                        <option value="all" class="bg-slate-900" selected>[Todas las Carreras]</option>
+                        <option value="105-5" class="bg-slate-900">105-5 Contaduría Pública</option>
+                        <option value="157-1" class="bg-slate-900">157-1 Derecho</option>
+                        <option value="159-2" class="bg-slate-900">159-2 Trabajo Social</option>
+                        <option value="187-3" class="bg-slate-900">187-3 Ingeniería Informática</option>
+                        <option value="187-4" class="bg-slate-900">187-4 Ingeniería en Sistemas</option>
+                    </select>
+                </div>
+
+                <!-- Semestre / Período (Slicer del Excel) -->
+                <div class="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-700">
+                    <span class="text-slate-400 font-medium">Semestre:</span>
+                    <select id="periodoSelect" onchange="applyFilters()" class="bg-transparent text-emerald-400 font-bold outline-none cursor-pointer">
+                        <option value="I-2026" class="bg-slate-900" selected>I-2026 (Activo)</option>
+                        <option value="I-2025" class="bg-slate-900">I-2025</option>
+                        <option value="II-2019" class="bg-slate-900">II-2019 (Histórico)</option>
+                        <option value="I-2019" class="bg-slate-900">I-2019 (Base Excel)</option>
+                    </select>
+                </div>
+
+                <!-- Nivel Curricular (Slicer del Excel) -->
+                <div class="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-700">
+                    <span class="text-slate-400 font-medium">Nivel:</span>
+                    <select id="nivelSelect" onchange="applyFilters()" class="bg-transparent text-amber-400 font-bold outline-none cursor-pointer">
+                        <option value="all" class="bg-slate-900" selected>Todos</option>
+                        <option value="1" class="bg-slate-900">Nivel 1</option>
+                        <option value="2" class="bg-slate-900">Nivel 2</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Selector de Semestre Histórico (RF-09) & Telemetría CQRS -->
-            <div class="flex items-center space-x-3">
-                <div class="flex items-center space-x-1.5 text-xs">
-                    <span class="text-gray-400">Gestión:</span>
-                    <select id="gestionSelector" class="bg-gray-700 text-white rounded px-2 py-1 text-xs border border-gray-600">
-                        <option value="II-2026" selected>II-2026 (Activa en Curso)</option>
-                        <option value="I-2026">I-2026 (Cerrada)</option>
-                        <option value="II-2025">II-2025 (Histórico)</option>
-                        <option value="I-2025">I-2025 (Histórico)</option>
-                    </select>
-                </div>
-                <div class="bg-gray-900 border border-gray-700 px-2.5 py-1 rounded text-[11px] text-green-400 font-mono flex items-center gap-1.5">
-                    <i class="fa-solid fa-bolt"></i> CQRS: <span id="cqrsLatency">11 ms</span>
-                </div>
+            <!-- Botones de Acción y Exportación -->
+            <div class="flex items-center gap-2">
+                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition shadow">
+                    <i class="fa-regular fa-file-excel"></i> Excel
+                </button>
+                <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition shadow">
+                    <i class="fa-solid fa-print"></i> Imprimir / PDF
+                </button>
+                <button onclick="refreshData()" class="bg-uagrm-red hover:bg-uagrm-reddark text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition shadow">
+                    <i class="fa-solid fa-rotate mr-1"></i> Actualizar
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- 3. CONTENEDOR PRINCIPAL DE DECISIÓN JERÁRQUICA (RF-07) -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <!-- 3. CONTENIDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
 
-        <!-- BREADCRUMB / DRILL-DOWN JERÁRQUICO (RF-07) -->
-        <nav class="flex items-center text-sm font-medium text-gray-500 bg-white p-3 rounded-lg border border-gray-200 shadow-sm" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-2" id="drilldownBreadcrumb">
-                <li class="inline-flex items-center">
-                    <button onclick="navigateDrillDown('macro')" class="text-uagrm-red hover:underline inline-flex items-center">
-                        <i class="fa-solid fa-university mr-1.5"></i> UAGRM DEDTE Central
-                    </button>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-chevron-right text-gray-400 mx-1 text-xs"></i>
-                        <button onclick="navigateDrillDown('facultad')" class="text-uagrm-red hover:underline">
-                            Fac. Cs. Jurídicas, Políticas y Sociales
-                        </button>
-                    </div>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-chevron-right text-gray-400 mx-1 text-xs"></i>
-                        <button onclick="navigateDrillDown('carrera')" class="text-uagrm-red hover:underline">
-                            Carrera de Derecho
-                        </button>
-                    </div>
-                </li>
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-chevron-right text-gray-400 mx-1 text-xs"></i>
-                        <span class="text-gray-700 font-bold">[DER-101] Guía Estudiantil - Grupo 1</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
-
-        <!-- BANNER DE CONTEXTO DIRECTIVO Y ACCIONES INSTITUCIONALES (RF-08) -->
-        <div class="glass-card p-5 bg-gradient-to-r from-white via-white to-red-50 border-l-4 border-uagrm-red">
-            <div class="flex flex-wrap justify-between items-center gap-4">
-                <div>
-                    <h1 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                        <span>⚖️</span> Monitoreo y Seguimiento al Rendimiento Académico
-                        <span class="bg-red-100 text-uagrm-red text-xs px-2.5 py-0.5 rounded-full font-bold">Semáforo: AMARILLO (En Observación)</span>
-                    </h1>
-                    <p class="text-xs text-gray-600 mt-1">
-                        Sustento Normativo: <strong>Resolución ICU N° 053/2023</strong> &bull; Estatuto Orgánico UAGRM (Art. 39 y 128) &bull; Auditoría Oficial DEDTE
-                    </p>
+        <!-- 3.1 CINTA RESUMEN DE INDICADORES NORMATIVOS (KPIS EJECUTIVOS) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <!-- Inscritos Totales -->
+            <div class="glass-card p-4 border-l-4 border-l-blue-600">
+                <div class="flex justify-between items-center text-slate-500 text-xs font-medium">
+                    <span>Est. Inscritos (#INSC)</span>
+                    <i class="fa-solid fa-users text-blue-600"></i>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <button onclick="exportOfficialPDF()" class="inline-flex items-center gap-1.5 bg-gray-900 hover:bg-black text-white text-xs font-bold px-3 py-2 rounded-lg shadow-sm transition">
-                        <i class="fa-solid fa-file-pdf text-red-400"></i> PDF Oficial ICU N° 053/2023
-                    </button>
-                    <button onclick="exportOfficialExcel()" class="inline-flex items-center gap-1.5 bg-green-700 hover:bg-green-800 text-white text-xs font-bold px-3 py-2 rounded-lg shadow-sm transition">
-                        <i class="fa-solid fa-file-excel"></i> Exportar Plantilla DEDTE (.xlsx)
-                    </button>
+                <div class="text-2xl font-black text-slate-900 mt-1" id="kpiInscritos">--</div>
+                <div class="text-[11px] text-slate-400 mt-0.5" id="kpiMateriasCount">-- materias filtradas</div>
+            </div>
+
+            <!-- Aprobados -->
+            <div class="glass-card p-4 border-l-4 border-l-emerald-600">
+                <div class="flex justify-between items-center text-slate-500 text-xs font-medium">
+                    <span>Aprobados (#APROB)</span>
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                </div>
+                <div class="text-2xl font-black text-emerald-700 mt-1" id="kpiAprobados">--</div>
+                <div class="text-[11px] text-emerald-600 font-bold mt-0.5" id="kpiPctAprobados">-- % del total</div>
+            </div>
+
+            <!-- Reprobados -->
+            <div class="glass-card p-4 border-l-4 border-l-rose-600">
+                <div class="flex justify-between items-center text-slate-500 text-xs font-medium">
+                    <span>Reprobados (#REPRO)</span>
+                    <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                </div>
+                <div class="text-2xl font-black text-rose-700 mt-1" id="kpiReprobados">--</div>
+                <div class="text-[11px] text-rose-600 font-bold mt-0.5" id="kpiPctReprobados">-- % del total</div>
+            </div>
+
+            <!-- Segunda Instancia (Repechaje 40-50 pts) -->
+            <div class="glass-card p-4 border-l-4 border-l-amber-500">
+                <div class="flex justify-between items-center text-slate-500 text-xs font-medium">
+                    <span>2da Instancia (40-50 pts)</span>
+                    <i class="fa-solid fa-scale-balanced text-amber-500"></i>
+                </div>
+                <div class="text-2xl font-black text-amber-700 mt-1" id="kpiSegundaInstancia">--</div>
+                <div class="text-[11px] text-amber-600 font-semibold mt-0.5" id="kpiPct2daInst">Derecho a repechaje</div>
+            </div>
+
+            <!-- Deserción / Abandono con Cero (#REP_0) -->
+            <div class="glass-card p-4 border-l-4 border-l-purple-600 bg-purple-50/20">
+                <div class="flex justify-between items-center text-slate-500 text-xs font-medium">
+                    <span>Deserción (#REP_0)</span>
+                    <i class="fa-solid fa-user-slash text-purple-600"></i>
+                </div>
+                <div class="text-2xl font-black text-purple-900 mt-1" id="kpiDesercion">--</div>
+                <div class="text-[11px] text-purple-700 font-bold mt-0.5" id="kpiAlertas7d">-- alertas > 7d</div>
+            </div>
+
+            <!-- Promedio General / Aprobados -->
+            <div class="glass-card p-4 border-l-4 border-l-indigo-600">
+                <div class="flex justify-between items-center text-slate-500 text-xs font-medium">
+                    <span>Promedios (General/Ap)</span>
+                    <i class="fa-solid fa-chart-simple text-indigo-600"></i>
+                </div>
+                <div class="text-xl font-black text-slate-900 mt-1 flex items-baseline gap-1">
+                    <span id="kpiPromedioGen">--</span>
+                    <span class="text-xs font-normal text-slate-400">/</span>
+                    <span id="kpiPromedioAp" class="text-emerald-600 text-lg">--</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-0.5" id="kpiPromedioReprS0">Rep. s/0: -- pts</div>
+            </div>
+        </div>
+
+        <!-- 3.2 NAVEGACIÓN POR PESTAÑAS (LOS 4 BLOQUES OFICIALES DEDTE) -->
+        <div class="border-b border-slate-200">
+            <nav class="flex space-x-2 sm:space-x-4 overflow-x-auto text-xs font-bold" id="mainTabs">
+                <button onclick="switchTab('tab-dashboard')" id="btn-tab-dashboard" class="tab-btn py-3 px-4 border-b-2 border-uagrm-red text-uagrm-red flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-chart-pie"></i> Tablero Rendimiento (Excel 2019 en Vivo)
+                </button>
+                <button onclick="switchTab('tab-bloque1')" id="btn-tab-bloque1" class="tab-btn py-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-door-open"></i> Bloque 1: Apertura e Infraestructura
+                </button>
+                <button onclick="switchTab('tab-bloque2')" id="btn-tab-bloque2" class="tab-btn py-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-users-viewfinder"></i> Bloque 2: Población y Carga
+                </button>
+                <button onclick="switchTab('tab-bloque3')" id="btn-tab-bloque3" class="tab-btn py-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-trophy"></i> Bloque 3: Aprobación y 2da Instancia
+                </button>
+                <button onclick="switchTab('tab-bloque4')" id="btn-tab-bloque4" class="tab-btn py-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Bloque 4: Deserción y Semáforos
+                </button>
+                <button onclick="switchTab('tab-detalle')" id="btn-tab-detalle" class="tab-btn py-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-list-check"></i> Detalle por Materia
+                </button>
+            </nav>
+        </div>
+
+        <!-- PESTAÑA 1: TABLERO DE RENDIMIENTO (LOS 4 GRÁFICOS DEL EXCEL) -->
+        <div id="tab-dashboard" class="tab-content space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Gráfico 1: Aprobados y Reprobados por Materia -->
+                <div class="glass-card p-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900">Gráfico 1: Aprobados y Reprobados por Materia</h3>
+                            <p class="text-xs text-slate-500">Comparativa directa de #INSC (Azul), #APROB (Verde) y #REPRO (Rojo)</p>
+                        </div>
+                        <span class="text-xs font-semibold px-2 py-1 bg-slate-100 rounded text-slate-600">Excel S1</span>
+                    </div>
+                    <div class="h-72">
+                        <canvas id="chartAprobadosReprobados"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico 2: Porcentaje Aprobados vs Reprobados (100% Horizontal) -->
+                <div class="glass-card p-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900">Gráfico 2: % Aprobados vs Reprobados (100% Apilado)</h3>
+                            <p class="text-xs text-slate-500">Distribución porcentual de éxito académico por asignatura</p>
+                        </div>
+                        <span class="text-xs font-semibold px-2 py-1 bg-slate-100 rounded text-slate-600">Excel S2</span>
+                    </div>
+                    <div class="h-72">
+                        <canvas id="chartPorcentajes"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico 3: Notas Promedios del Semestre -->
+                <div class="glass-card p-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900">Gráfico 3: Notas Promedios del Semestre (Escala 0-100)</h3>
+                            <p class="text-xs text-slate-500">Promedio General (Azul), Aprobados (Verde) y Reprobados sin Cero (Naranja)</p>
+                        </div>
+                        <span class="text-xs font-semibold px-2 py-1 bg-slate-100 rounded text-slate-600">Excel S3</span>
+                    </div>
+                    <div class="h-72">
+                        <canvas id="chartPromedios"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico 4: Datos de Estudiantes Inscritos y Permanencia -->
+                <div class="glass-card p-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900">Gráfico 4: Datos de Estudiantes Inscritos y Permanencia</h3>
+                            <p class="text-xs text-slate-500">Inscritos vs Retiros (#RETMA), Repitientes (#REPMA) y Ceros (#REP_0)</p>
+                        </div>
+                        <span class="text-xs font-semibold px-2 py-1 bg-slate-100 rounded text-slate-600">Excel S4</span>
+                    </div>
+                    <div class="h-72">
+                        <canvas id="chartPermanencia"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TARJETAS DE RESUMEN EJECUTIVO / KPIS INSTITUCIONALES (RF-07, RF-03, RF-04, RF-05) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- KPI 1: Matrícula y Densidad Kopere (RF-03) -->
-            <div class="glass-card p-4">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Matrícula Formal</span>
-                    <span class="p-2 rounded-lg bg-blue-50 text-blue-600"><i class="fa-solid fa-users text-sm"></i></span>
-                </div>
-                <div class="text-2xl font-black text-gray-900 mt-2" id="kpiMatriculados">40</div>
-                <div class="flex justify-between items-center text-xs text-gray-500 mt-2 pt-2 border-t border-gray-100">
-                    <span>Densidad Kopere: <strong>Normal</strong></span>
-                    <span class="text-green-600 font-semibold"><i class="fa-solid fa-check"></i> 100% Evaluados</span>
-                </div>
-            </div>
-
-            <!-- KPI 2: Aprobación Oficial (RF-04) -->
-            <div class="glass-card p-4">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Tasa Aprobación</span>
-                    <span class="p-2 rounded-lg bg-green-50 text-green-600"><i class="fa-solid fa-award text-sm"></i></span>
-                </div>
-                <div class="text-2xl font-black text-green-600 mt-2" id="kpiAprobacion">55.0%</div>
-                <div class="flex justify-between items-center text-xs text-gray-500 mt-2 pt-2 border-t border-gray-100">
-                    <span>Nota Promedio: <strong id="kpiPromedio">52.39</strong></span>
-                    <span class="text-green-600 font-semibold">22 Aprobados</span>
-                </div>
-            </div>
-
-            <!-- KPI 3: Segunda Instancia Reglamentaria (RF-04) -->
-            <div class="glass-card p-4 border-l-4 border-amber-500">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Segunda Instancia (40-50)</span>
-                    <span class="p-2 rounded-lg bg-amber-50 text-amber-600"><i class="fa-solid fa-rotate-right text-sm"></i></span>
-                </div>
-                <div class="text-2xl font-black text-amber-600 mt-2" id="kpiSegundaInstancia">5</div>
-                <div class="flex justify-between items-center text-xs text-gray-500 mt-2 pt-2 border-t border-gray-100">
-                    <span>Derecho a Repechaje UAGRM</span>
-                    <span class="text-amber-600 font-bold">12.5% de cohorte</span>
-                </div>
-            </div>
-
-            <!-- KPI 4: Abandono / Inactividad Crítica (RF-05, RF-06) -->
-            <div class="glass-card p-4 border-l-4 border-red-500">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Deserción / Críticos</span>
-                    <span class="p-2 rounded-lg bg-red-50 text-uagrm-red"><i class="fa-solid fa-triangle-exclamation text-sm"></i></span>
-                </div>
-                <div class="text-2xl font-black text-uagrm-red mt-2" id="kpiDesercion">4</div>
-                <div class="flex justify-between items-center text-xs text-gray-500 mt-2 pt-2 border-t border-gray-100">
-                    <span>Sin Acceso / Nota 0</span>
-                    <span class="text-red-600 font-bold">10.0% Alerta Roja</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. VISTA DE DECISIÓN: GRÁFICOS Y AUDITORÍA DE APERTURA (RF-02, RF-06, RF-07) -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Gráfico 1: Histograma de Calificaciones UAGRM (2 Cols) -->
-            <div class="glass-card p-5 lg:col-span-2">
-                <div class="flex justify-between items-center pb-3 border-b border-gray-100 mb-4">
+        <!-- PESTAÑA 2: BLOQUE 1 (APERTURA E INFRAESTRUCTURA) -->
+        <div id="tab-bloque1" class="tab-content hidden space-y-6">
+            <div class="glass-card p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
                     <div>
-                        <h2 class="font-bold text-gray-900 text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-chart-column text-uagrm-red"></i> Distribución de Rendimiento y Segunda Instancia
-                        </h2>
-                        <p class="text-xs text-gray-500">Segmentación por rangos reglamentarios de la UAGRM</p>
+                        <h2 class="text-base font-bold text-slate-900">1. Reporte de Apertura de Semestre e Infraestructura Académica</h2>
+                        <p class="text-xs text-slate-500">Control de inicio de período lectivo, aulas virtuales habilitadas y auditoría de contenidos pedagógicos</p>
                     </div>
-                    <span class="bg-gray-100 text-gray-600 text-[11px] font-semibold px-2 py-1 rounded">Corte Mínimo: 51 pts</span>
                 </div>
-                <div class="h-64 w-full">
-                    <canvas id="chartRendimiento"></canvas>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-medium text-slate-500">Aulas Habilitadas y Siglas</div>
+                        <div class="text-2xl font-black text-slate-900 mt-1" id="b1Materias">--</div>
+                        <div class="text-[11px] text-emerald-600 font-bold mt-1">100% programadas por CPD/DTIC</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-medium text-slate-500">Docentes Titulares Matriculados</div>
+                        <div class="text-2xl font-black text-emerald-700 mt-1" id="b1Docentes">--</div>
+                        <div class="text-[11px] text-slate-500 mt-1">0 aulas acéfalas en producción</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-medium text-slate-500">Cumplimiento Modelo Mosaico</div>
+                        <div class="text-2xl font-black text-blue-700 mt-1">100%</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Carpetas pedagógicas y candados auditados</div>
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl overflow-hidden">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-bold text-[11px]">
+                            <tr>
+                                <th class="p-3">Sigla - Grupo</th>
+                                <th class="p-3">Nombre de la Asignatura</th>
+                                <th class="p-3">Carrera</th>
+                                <th class="p-3 text-center">Estado Aula</th>
+                                <th class="p-3 text-center">Carpeta Pedagógica</th>
+                                <th class="p-3 text-center">Tema Mosaico</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaAperturaBody" class="divide-y divide-slate-200">
+                            <!-- Inyectado vía JS -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <!-- Auditoría de Apertura e Infraestructura (RF-02) (1 Col) -->
-            <div class="glass-card p-5">
-                <div class="pb-3 border-b border-gray-100 mb-4">
-                    <h2 class="font-bold text-gray-900 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-clipboard-check text-blue-600"></i> Auditoría de Apertura (RF-02)
-                    </h2>
-                    <p class="text-xs text-gray-500">Revisión de requisitos DEDTE / Vicedecanato</p>
+        <!-- PESTAÑA 3: BLOQUE 2 (POBLACIÓN ESTUDIANTIL) -->
+        <div id="tab-bloque2" class="tab-content hidden space-y-6">
+            <div class="glass-card p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-users-rectangle"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">2. Reporte de Población Estudiantil y Carga de Inscripción</h2>
+                        <p class="text-xs text-slate-500">Alcance de cobertura académica, estudiantes con actas sin nota y ausentismo inicial</p>
+                    </div>
                 </div>
-                <div class="space-y-3 text-xs">
-                    <div class="flex justify-between items-center p-2.5 bg-green-50 rounded-lg border border-green-200">
-                        <div>
-                            <div class="font-bold text-green-900">Visibilidad del Aula</div>
-                            <div class="text-green-700">Estado «Visible» para estudiantes</div>
-                        </div>
-                        <span class="text-green-700 font-bold"><i class="fa-solid fa-circle-check text-base"></i></span>
-                    </div>
 
-                    <div class="flex justify-between items-center p-2.5 bg-green-50 rounded-lg border border-green-200">
-                        <div>
-                            <div class="font-bold text-green-900">Estructura Pedagógica</div>
-                            <div class="text-green-700">Formato Mosaico verificado</div>
-                        </div>
-                        <span class="text-green-700 font-bold"><i class="fa-solid fa-circle-check text-base"></i></span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-medium text-slate-500">Población Inscrita Total (#INSC)</div>
+                        <div class="text-2xl font-black text-slate-900 mt-1" id="b2Inscritos">--</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Registros con matrícula oficial activa</div>
                     </div>
-
-                    <div class="flex justify-between items-center p-2.5 bg-green-50 rounded-lg border border-green-200">
-                        <div>
-                            <div class="font-bold text-green-900">Carpeta Pedagógica</div>
-                            <div class="text-green-700">Presente en cabecera del curso</div>
-                        </div>
-                        <span class="text-green-700 font-bold"><i class="fa-solid fa-circle-check text-base"></i></span>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-medium text-slate-500">Estudiantes Sin Nota (#S/NOT)</div>
+                        <div class="text-2xl font-black text-amber-600 mt-1" id="b2SinNota">--</div>
+                        <div class="text-[11px] text-amber-600 mt-1">Pendientes de evaluación o acta</div>
                     </div>
-
-                    <div class="flex justify-between items-center p-2.5 bg-green-50 rounded-lg border border-green-200">
-                        <div>
-                            <div class="font-bold text-green-900">Concordancia Docente</div>
-                            <div class="text-green-700">Rol editingteacher confirmado</div>
-                        </div>
-                        <span class="text-green-700 font-bold"><i class="fa-solid fa-circle-check text-base"></i></span>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-medium text-slate-500">Promedio de Carga por Paralelo</div>
+                        <div class="text-2xl font-black text-indigo-600 mt-1" id="b2PromedioCarga">--</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Estudiantes por curso virtual</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 5. NÓMINA OFICIAL & PESTAÑA ESPECIAL SEGUNDA INSTANCIA (RF-04, RF-05) -->
-        <div class="glass-card overflow-hidden">
-            <!-- Barra de Filtros y Pestañas de Tabla -->
-            <div class="bg-gray-50 border-b border-gray-200 px-5 py-3 flex flex-wrap justify-between items-center gap-3">
-                <div class="flex items-center space-x-2">
-                    <button onclick="setTableTab('todos')" id="tabTodos" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-gray-900 border border-gray-300 shadow-sm">
-                        Todos los Estudiantes (40)
-                    </button>
-                    <button onclick="setTableTab('segunda_instancia')" id="tabSegunda" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300">
-                        ⭐ Habilitados a 2da Instancia (5)
-                    </button>
-                    <button onclick="setTableTab('criticos')" id="tabCriticos" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-100 text-red-800 border border-red-300">
-                        🛑 Riesgo / Abandono Crítico (4)
-                    </button>
-                    <button onclick="setTableTab('aprobados')" id="tabAprobados" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-green-100 text-green-800 border border-green-300">
-                        ✅ Aprobados (22)
-                    </button>
+        <!-- PESTAÑA 4: BLOQUE 3 (RENDIMIENTO Y 2DA INSTANCIA) -->
+        <div id="tab-bloque3" class="tab-content hidden space-y-6">
+            <div class="glass-card p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">3. Reporte de Rendimiento Académico, Aprobación y 2da Instancia</h2>
+                        <p class="text-xs text-slate-500">Éxito o fracaso desagregado y cálculo normado de repechaje (40 a 50 puntos)</p>
+                    </div>
                 </div>
-                <div class="relative w-64">
-                    <input type="text" id="tableSearch" onkeyup="searchStudent()" placeholder="Buscar alumno por nombre..." class="w-full text-xs pl-8 pr-3 py-1.5 rounded-lg border border-gray-300 focus:ring-uagrm-red focus:border-uagrm-red">
-                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                        <div class="text-xs font-medium text-emerald-800">Tasa de Aprobación Global</div>
+                        <div class="text-3xl font-black text-emerald-800 mt-1" id="b3PctAprob">--%</div>
+                        <div class="text-[11px] text-emerald-700 mt-1" id="b3TotalAprob">-- estudiantes</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                        <div class="text-xs font-medium text-rose-800">Tasa de Reprobación Global</div>
+                        <div class="text-3xl font-black text-rose-800 mt-1" id="b3PctRepr">--%</div>
+                        <div class="text-[11px] text-rose-700 mt-1" id="b3TotalRepr">-- estudiantes</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                        <div class="text-xs font-medium text-amber-800">Habilitados a 2da Instancia</div>
+                        <div class="text-3xl font-black text-amber-800 mt-1" id="b3SegundaInst">--</div>
+                        <div class="text-[11px] text-amber-700 mt-1">40 &le; Nota Final &le; 50 pts</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-medium text-slate-500">Nota Promedio Aprobados</div>
+                        <div class="text-3xl font-black text-slate-900 mt-1" id="b3PromAprob">--</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Excluye reprobados (NPRMAP)</div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Tabla de Nómina -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-gray-600" id="studentsTable">
-                    <thead class="bg-gray-100 text-gray-700 uppercase font-bold text-[11px] tracking-wider border-b border-gray-200">
-                        <tr>
-                            <th class="py-3 px-4">Estudiante</th>
-                            <th class="py-3 px-4">Correo Institucional</th>
-                            <th class="py-3 px-4">Calificación Final</th>
-                            <th class="py-3 px-4">Condición Reglamentaria</th>
-                            <th class="py-3 px-4">Inactividad (RF-05)</th>
-                            <th class="py-3 px-4 text-center">Acción Directiva</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100" id="studentTableBody">
-                        <!-- Generado dinámicamente con JavaScript -->
-                    </tbody>
-                </table>
+        <!-- PESTAÑA 5: BLOQUE 4 (DESERCIÓN, RETIROS Y SEMÁFOROS) -->
+        <div id="tab-bloque4" class="tab-content hidden space-y-6">
+            <div class="glass-card p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">4. Reporte de Deserción, Retiros y Semáforos Preventivos</h2>
+                        <p class="text-xs text-slate-500">Alertas tempranas a los 7 días de inactividad, abandono fáctico a los 14 días y semáforo por materia</p>
+                    </div>
+                </div>
+
+                <!-- Métricas de Deserción y Alertas -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                        <div class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 pulse-live"></span> Alerta Preventiva (Nivel 1)
+                        </div>
+                        <div class="text-3xl font-black text-amber-800 mt-2" id="b4Alertas7d">--</div>
+                        <div class="text-[11px] text-amber-700 mt-1">> 7 días sin actividad en logs</div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                        <div class="text-xs font-bold text-rose-800 flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> Riesgo Crítico / Abandono
+                        </div>
+                        <div class="text-3xl font-black text-rose-800 mt-2" id="b4Alertas14d">--</div>
+                        <div class="text-[11px] text-rose-700 mt-1">> 14 días inactivos (#REP_0)</div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-medium text-slate-500">Retiros Formales (#RETMA)</div>
+                        <div class="text-3xl font-black text-slate-800 mt-2" id="b4Retiros">--</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Trámite oficial ante Carrera</div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-purple-50 border border-purple-200">
+                        <div class="text-xs font-medium text-purple-800">Índice Deserción Temprana</div>
+                        <div class="text-3xl font-black text-purple-800 mt-2" id="b4IndiceDesercion">--%</div>
+                        <div class="text-[11px] text-purple-700 mt-1">Sobre la matrícula inicial</div>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Dispersión / Correlación Carga vs Deserción -->
+                <div class="p-5 border border-slate-200 rounded-xl bg-slate-50/50">
+                    <h3 class="text-sm font-bold text-slate-900 mb-1">Correlación: Índice de Carga Operativa vs Tasa de Deserción</h3>
+                    <p class="text-xs text-slate-500 mb-4">Relación entre el número de tareas/retos exigidos semanalmente y la deserción estudiantil</p>
+                    <div class="h-64">
+                        <canvas id="chartCargaVsDesercion"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA 6: DETALLE COMPLETO DE MATERIAS -->
+        <div id="tab-detalle" class="tab-content hidden space-y-6">
+            <div class="glass-card p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">Tabla Nominal y Métrica Desglosada por Asignatura</h2>
+                        <p class="text-xs text-slate-500">Sincronización en tiempo real con Moodle 5.1 y el modelo Excel oficial</p>
+                    </div>
+                    <span class="text-xs font-bold text-slate-500" id="tableFilterNotice">Mostrando todas</span>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl overflow-x-auto">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-bold text-[10px]">
+                            <tr>
+                                <th class="p-3">Sigla</th>
+                                <th class="p-3">Materia</th>
+                                <th class="p-3">Carrera</th>
+                                <th class="p-3 text-center">Nivel</th>
+                                <th class="p-3 text-center">Insc.</th>
+                                <th class="p-3 text-center">Aprob.</th>
+                                <th class="p-3 text-center">% Aprob.</th>
+                                <th class="p-3 text-center">Repr.</th>
+                                <th class="p-3 text-center">2da Inst.</th>
+                                <th class="p-3 text-center">Cero (Deserc.)</th>
+                                <th class="p-3 text-center">Prom. Gen.</th>
+                                <th class="p-3 text-center">Semáforo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaDetalleBody" class="divide-y divide-slate-200">
+                            <!-- Inyectado vía JS -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
     </main>
 
-    <!-- FOOTER INSTITUCIONAL GESTOR AVA -->
-    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-xs text-gray-500">
-        <p><strong>Gestión AVA - Módulo de Analítica Académica v2.0</strong> &bull; Sistema Oficial de la Dirección de Educación a Distancia y Tecnología Educativa (DEDTE)</p>
-        <p class="mt-1">Universidad Autónoma Gabriel René Moreno &bull; Santa Cruz de la Sierra, Bolivia &bull; Sustentado en Resolución ICU N° 053/2023</p>
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="bg-white border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-400 no-print">
+        <p>&copy; 2026 Universidad Autónoma Gabriel René Moreno (U.A.G.R.M.) &bull; Dirección de Educación a Distancia y Tecnología Educativa (DEDTE)</p>
+        <p class="text-[11px] text-slate-400 mt-1">Conforme a la Resolución ICU N° 053/2023 &bull; Moodle 5.1 LTS &bull; CQRS Analytics Engine</p>
     </footer>
 
-    <!-- SCRIPT DE DATOS Y REACTIVIDAD -->
+    <!-- LÓGICA JAVASCRIPT Y GRÁFICOS CHART.JS -->
     <script>
-        let currentPlatform = 'virtual';
-        let currentTab = 'todos';
-        let studentsData = [];
+        let currentData = null;
+        let chartInstances = {};
 
-        // Inicialización
+        // Inicialización al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
             fetchData();
         });
 
-        function fetchData() {
-            // Consulta a la API de métricas CQRS (puerto 8080 del clon o backend local)
-            fetch('http://localhost:8080/report/analitica_ava/index.php?id=2')
-                .catch(() => {})
-                .finally(() => {
-                    // Datos calculados del curso real (40 estudiantes)
-                    studentsData = [
-                        { id: 140, nombre: "Antonella Ledezma Irahola", email: "est040@uagrm-test.edu.bo", nota: 0, estado: "critico", etiqueta: "🛑 Abandono Crítico", inactividad: "Inactividad Nivel 2 (>14 días)" },
-                        { id: 139, nombre: "Rodrigo Soliz Bascope", email: "est039@uagrm-test.edu.bo", nota: 0, estado: "critico", etiqueta: "🛑 Abandono Crítico", inactividad: "Inactividad Nivel 2 (>14 días)" },
-                        { id: 138, nombre: "Agustina Roca Miranda", email: "est038@uagrm-test.edu.bo", nota: 0, estado: "critico", etiqueta: "🛑 Abandono Crítico", inactividad: "Inactividad Nivel 2 (>14 días)" },
-                        { id: 137, nombre: "Tomas Villarroel Carrasco", email: "est037@uagrm-test.edu.bo", nota: 0, estado: "critico", etiqueta: "🛑 Abandono Crítico", inactividad: "Inactividad Nivel 2 (>14 días)" },
-                        { id: 129, nombre: "Lucia Centellas Aviles", email: "est029@uagrm-test.edu.bo", nota: 5, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Alerta Nivel 1 (>7 días)" },
-                        { id: 130, nombre: "Emilio Parada Saravia", email: "est030@uagrm-test.edu.bo", nota: 9, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Alerta Nivel 1 (>7 días)" },
-                        { id: 131, nombre: "Mariana Torrico Fuentes", email: "est031@uagrm-test.edu.bo", nota: 13, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Activo" },
-                        { id: 132, nombre: "Nicolas Espinoza Melgar", email: "est032@uagrm-test.edu.bo", nota: 17, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Activo" },
-                        { id: 133, nombre: "Florencia Vasquez Callaú", email: "est033@uagrm-test.edu.bo", nota: 21, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Activo" },
-                        { id: 134, nombre: "Gabriel Ortiz Peralta", email: "est034@uagrm-test.edu.bo", nota: 25, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Activo" },
-                        { id: 135, nombre: "Camilo Alvarado Mendez", email: "est035@uagrm-test.edu.bo", nota: 29, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Activo" },
-                        { id: 136, nombre: "Valeria Pinto Suarez", email: "est036@uagrm-test.edu.bo", nota: 33, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Activo" },
-                        { id: 121, nombre: "Carlos Menacho Saucedo", email: "est021@uagrm-test.edu.bo", nota: 37, estado: "reprobado", etiqueta: "🟡 Reprobado Directo", inactividad: "Activo" },
-                        // Estudiantes con Derecho a Segunda Instancia (40 a 50 pts)
-                        { id: 122, nombre: "Renata Morales Cuellar", email: "est022@uagrm-test.edu.bo", nota: 41, estado: "segunda_instancia", etiqueta: "⭐ Segunda Instancia", inactividad: "Activo" },
-                        { id: 123, nombre: "Ignacio Justiniano Vaca", email: "est023@uagrm-test.edu.bo", nota: 43, estado: "segunda_instancia", etiqueta: "⭐ Segunda Instancia", inactividad: "Activo" },
-                        { id: 124, nombre: "Daniela Antelo Moreno", email: "est024@uagrm-test.edu.bo", nota: 45, estado: "segunda_instancia", etiqueta: "⭐ Segunda Instancia", inactividad: "Activo" },
-                        { id: 125, nombre: "Mateo Banegas Ribera", email: "est025@uagrm-test.edu.bo", nota: 47, estado: "segunda_instancia", etiqueta: "⭐ Segunda Instancia", inactividad: "Activo" },
-                        { id: 126, nombre: "Sofia Guzman Hurtado", email: "est026@uagrm-test.edu.bo", nota: 49, estado: "segunda_instancia", etiqueta: "⭐ Segunda Instancia", inactividad: "Activo" },
-                        // Aprobados Regulares (51 a 69 pts)
-                        { id: 127, nombre: "Leonardo Aguilera Paz", email: "est027@uagrm-test.edu.bo", nota: 53, estado: "aprobado", etiqueta: "🔵 Regular", inactividad: "Activo" },
-                        { id: 128, nombre: "Camila Vaca Diez", email: "est028@uagrm-test.edu.bo", nota: 57, estado: "aprobado", etiqueta: "🔵 Regular", inactividad: "Activo" },
-                        { id: 111, nombre: "Sebastian Rojas Montero", email: "est011@uagrm-test.edu.bo", nota: 61, estado: "aprobado", etiqueta: "🔵 Regular", inactividad: "Activo" },
-                        { id: 112, nombre: "Jimena Salguero Paz", email: "est012@uagrm-test.edu.bo", nota: 65, estado: "aprobado", etiqueta: "🔵 Regular", inactividad: "Activo" },
-                        // Aprobados Destacados (70 a 100 pts)
-                        { id: 113, nombre: "Patricia Delgado Reyes", email: "est013@uagrm-test.edu.bo", nota: 72, estado: "aprobado", etiqueta: "🟢 Sobresaliente", inactividad: "Activo" },
-                        { id: 114, nombre: "Fernando Paz Cardona", email: "est014@uagrm-test.edu.bo", nota: 78, estado: "aprobado", etiqueta: "🟢 Sobresaliente", inactividad: "Activo" },
-                        { id: 115, nombre: "Adriana Suarez Justiniano", email: "est015@uagrm-test.edu.bo", nota: 84, estado: "aprobado", etiqueta: "🟢 Sobresaliente", inactividad: "Activo" },
-                        { id: 116, nombre: "Mauricio Ribera Cuellar", email: "est016@uagrm-test.edu.bo", nota: 91, estado: "aprobado", etiqueta: "🟢 Sobresaliente", inactividad: "Activo" }
-                    ];
+        async function fetchData() {
+            const platform = document.getElementById('platformSelect').value;
+            const facultad = document.getElementById('facultadSelect').value;
+            const carrera = document.getElementById('carreraSelect').value;
+            const periodo = document.getElementById('periodoSelect').value;
+            const nivel = document.getElementById('nivelSelect').value;
+            const role = document.getElementById('roleSelector').value;
 
-                    renderTable();
-                    renderChart();
-                });
+            const url = `/api/metrics.php?action=academic_dashboard&platform=${platform}&facultad=${facultad}&carrera=${carrera}&period=${periodo}&nivel=${nivel}&role=${role}`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data.status === 'success') {
+                    currentData = data;
+                    renderUI(data);
+                }
+            } catch (err) {
+                console.error("Error al obtener métricas:", err);
+            }
         }
 
-        function renderTable() {
-            const tbody = document.getElementById('studentTableBody');
-            tbody.innerHTML = '';
+        function renderUI(data) {
+            const res = data.resumen_ejecutivo;
+            const blk = data.bloques_reportes;
 
-            const filtered = studentsData.filter(st => {
-                if (currentTab === 'todos') return true;
-                if (currentTab === 'segunda_instancia') return st.estado === 'segunda_instancia';
-                if (currentTab === 'criticos') return st.estado === 'critico';
-                if (currentTab === 'aprobados') return st.estado === 'aprobado';
-                return true;
-            });
+            // KPIs Cinta Superior
+            document.getElementById('kpiInscritos').innerText = res.total_inscritos.toLocaleString();
+            document.getElementById('kpiMateriasCount').innerText = `${res.total_materias} asignaturas analizadas`;
+            document.getElementById('kpiAprobados').innerText = res.total_aprobados.toLocaleString();
+            document.getElementById('kpiPctAprobados').innerText = `${res.tasa_aprobacion}% tasa de aprobación`;
+            document.getElementById('kpiReprobados').innerText = res.total_reprobados.toLocaleString();
+            document.getElementById('kpiPctReprobados').innerText = `${res.tasa_reprobacion}% tasa de reprobación`;
+            document.getElementById('kpiSegundaInstancia').innerText = res.total_segunda_instancia.toLocaleString();
+            document.getElementById('kpiPct2daInst').innerText = `${res.tasa_segunda_instancia}% a segunda instancia`;
+            document.getElementById('kpiDesercion').innerText = res.total_desercion_cero.toLocaleString();
+            document.getElementById('kpiAlertas7d').innerText = `${res.alertas_inactivos_7d} alertas > 7 días`;
+            document.getElementById('kpiPromedioGen').innerText = res.promedio_general.toFixed(1);
+            document.getElementById('kpiPromedioAp').innerText = res.promedio_aprobados.toFixed(1);
+            document.getElementById('kpiPromedioReprS0').innerText = `Rep. s/0: ${res.promedio_reprobados_sin_cero.toFixed(1)} pts`;
 
-            filtered.forEach(st => {
-                let badgeClass = 'bg-gray-100 text-gray-800 border-gray-200';
-                if (st.estado === 'critico') badgeClass = 'bg-red-50 text-red-700 border-red-200 font-bold';
-                if (st.estado === 'segunda_instancia') badgeClass = 'bg-amber-50 text-amber-800 border-amber-300 font-bold';
-                if (st.estado === 'reprobado') badgeClass = 'bg-yellow-50 text-yellow-800 border-yellow-200';
-                if (st.estado === 'aprobado') badgeClass = 'bg-green-50 text-green-700 border-green-200 font-bold';
+            // Bloque 1
+            document.getElementById('b1Materias').innerText = blk.bloque_1_apertura.materias_habilitadas;
+            document.getElementById('b1Docentes').innerText = blk.bloque_1_apertura.docentes_matriculados;
 
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-gray-50 transition border-b border-gray-100';
-                tr.innerHTML = `
-                    <td class="py-3 px-4 font-bold text-gray-900 flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-bold text-[10px]">
-                            ${st.nombre.split(' ').map(n=>n[0]).slice(0,2).join('')}
-                        </div>
-                        <span>${st.nombre}</span>
-                    </td>
-                    <td class="py-3 px-4 font-mono text-gray-500">${st.email}</td>
-                    <td class="py-3 px-4 font-bold text-sm ${st.nota >= 51 ? 'text-green-600' : (st.nota >= 40 ? 'text-amber-600' : 'text-red-600')}">
-                        ${st.nota !== 0 ? st.nota + ' / 100' : '<span class="text-red-500 font-normal">Sin Evaluación</span>'}
-                    </td>
-                    <td class="py-3 px-4">
-                        <span class="px-2.5 py-1 rounded-full text-[11px] border ${badgeClass}">
-                            ${st.etiqueta}
-                        </span>
-                    </td>
-                    <td class="py-3 px-4 text-gray-500 text-[11px]">${st.inactividad}</td>
-                    <td class="py-3 px-4 text-center">
-                        <a href="http://localhost:8080/message/index.php?id=${st.id}" target="_blank" class="text-blue-600 hover:text-blue-800 font-bold hover:underline" title="Notificar vía Moodle">
-                            <i class="fa-solid fa-paper-plane mr-1"></i> Notificar
-                        </a>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            // Bloque 2
+            document.getElementById('b2Inscritos').innerText = blk.bloque_2_poblacion.inscritos_totales.toLocaleString();
+            document.getElementById('b2SinNota').innerText = blk.bloque_2_poblacion.estudiantes_sin_nota.toLocaleString();
+            document.getElementById('b2PromedioCarga').innerText = `${blk.bloque_2_poblacion.promedio_alumnos_por_curso} alumnos`;
+
+            // Bloque 3
+            document.getElementById('b3PctAprob').innerText = `${blk.bloque_3_rendimiento.pct_aprobados}%`;
+            document.getElementById('b3TotalAprob').innerText = `${blk.bloque_3_rendimiento.aprobados} aprobados`;
+            document.getElementById('b3PctRepr').innerText = `${blk.bloque_3_rendimiento.pct_reprobados}%`;
+            document.getElementById('b3TotalRepr').innerText = `${blk.bloque_3_rendimiento.reprobados} reprobados`;
+            document.getElementById('b3SegundaInst').innerText = blk.bloque_3_rendimiento.segunda_instancia;
+            document.getElementById('b3PromAprob').innerText = blk.bloque_3_rendimiento.promedio_aprobados.toFixed(1);
+
+            // Bloque 4
+            document.getElementById('b4Alertas7d').innerText = blk.bloque_4_desercion.alertas_preventivas_7d;
+            document.getElementById('b4Alertas14d').innerText = blk.bloque_4_desercion.alertas_criticas_14d;
+            document.getElementById('b4Retiros').innerText = blk.bloque_4_desercion.retiros_materia;
+            document.getElementById('b4IndiceDesercion').innerText = `${blk.bloque_4_desercion.indice_desercion_temprana}%`;
+
+            // Renderizar Gráficos Excel
+            renderCharts(data.graficos_excel);
+
+            // Renderizar Tablas
+            renderTables(data.materias_detalle);
         }
 
-        function setTableTab(tab) {
-            currentTab = tab;
-            ['tabTodos', 'tabSegunda', 'tabCriticos', 'tabAprobados'].forEach(id => {
-                document.getElementById(id).classList.remove('bg-gray-900', 'text-white');
-            });
-            renderTable();
-        }
+        function renderCharts(g) {
+            // Destruir instancias previas
+            Object.values(chartInstances).forEach(c => c.destroy());
+            chartInstances = {};
 
-        function renderChart() {
-            const ctx = document.getElementById('chartRendimiento');
-            if (!ctx) return;
-
-            new Chart(ctx, {
+            // 1. Gráfico 1: Aprobados y Reprobados por Materia
+            const ctx1 = document.getElementById('chartAprobadosReprobados').getContext('2d');
+            chartInstances.chart1 = new Chart(ctx1, {
                 type: 'bar',
                 data: {
-                    labels: ['Destacados (70-100)', 'Regulares (51-69)', '2da Instancia (40-50)', 'Reprobados (1-39)', 'Abandono (0 pts)'],
+                    labels: g.labels,
+                    datasets: [
+                        { label: 'Inscritos (#INSC)', data: g.grafico_1_aprobados_reprobados.inscritos, backgroundColor: '#3b82f6' },
+                        { label: 'Aprobados (#APROB)', data: g.grafico_1_aprobados_reprobados.aprobados, backgroundColor: '#10b981' },
+                        { label: 'Reprobados (#REPRO)', data: g.grafico_1_aprobados_reprobados.reprobados, backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 2. Gráfico 2: Porcentajes Apilados al 100%
+            const ctx2 = document.getElementById('chartPorcentajes').getContext('2d');
+            chartInstances.chart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: g.labels,
+                    datasets: [
+                        { label: '% Aprobados', data: g.grafico_2_porcentajes.pct_aprobados, backgroundColor: '#10b981' },
+                        { label: '% Reprobados', data: g.grafico_2_porcentajes.pct_reprobados, backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, max: 100 },
+                        y: { stacked: true }
+                    }
+                }
+            });
+
+            // 3. Gráfico 3: Promedios del Semestre
+            const ctx3 = document.getElementById('chartPromedios').getContext('2d');
+            chartInstances.chart3 = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: g.labels,
+                    datasets: [
+                        { label: 'Nota Promedio (N_PROM)', data: g.grafico_3_promedios.promedio_general, backgroundColor: '#3b82f6' },
+                        { label: 'Promedio Aprobados (NPRMAP)', data: g.grafico_3_promedios.promedio_aprobados, backgroundColor: '#84cc16' },
+                        { label: 'Reprobados Sin Cero (NPRRS0)', data: g.grafico_3_promedios.promedio_reprobados_sin_cero, backgroundColor: '#f97316' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
+
+            // 4. Gráfico 4: Permanencia y Datos de Inscritos
+            const ctx4 = document.getElementById('chartPermanencia').getContext('2d');
+            chartInstances.chart4 = new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: g.labels,
+                    datasets: [
+                        { label: 'Inscritos', data: g.grafico_4_permanencia.inscritos, backgroundColor: '#3b82f6' },
+                        { label: 'Retiraron (#RETMA)', data: g.grafico_4_permanencia.retirados, backgroundColor: '#94a3b8' },
+                        { label: 'Repitieron (#REPMA)', data: g.grafico_4_permanencia.repitientes, backgroundColor: '#cbd5e1' },
+                        { label: 'Moras (#MORAS)', data: g.grafico_4_permanencia.moras, backgroundColor: '#eab308' },
+                        { label: 'Rep. con 0 (#REP_0)', data: g.grafico_4_permanencia.rep_cero, backgroundColor: '#dc2626' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 5. Gráfico 5: Correlación Carga vs Deserción
+            const ctx5 = document.getElementById('chartCargaVsDesercion').getContext('2d');
+            chartInstances.chart5 = new Chart(ctx5, {
+                type: 'scatter',
+                data: {
                     datasets: [{
-                        label: 'Estudiantes UAGRM',
-                        data: [12, 10, 5, 9, 4],
-                        backgroundColor: [
-                            'rgba(34, 197, 94, 0.85)',
-                            'rgba(59, 130, 246, 0.85)',
-                            'rgba(245, 158, 11, 0.85)',
-                            'rgba(234, 179, 8, 0.85)',
-                            'rgba(220, 38, 38, 0.85)'
-                        ],
-                        borderRadius: 6
+                        label: 'Materias Evaluadas',
+                        data: g.grafico_5_correlacion_carga,
+                        backgroundColor: '#dc2626',
+                        pointRadius: 6
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: '#f3f4f6' } },
-                        x: { grid: { display: false } }
+                        x: { title: { display: true, text: 'Tareas y Retos Exigidos por Semana' }, min: 0, max: 8 },
+                        y: { title: { display: true, text: '% Tasa de Deserción / Abandono' }, min: 0, max: 60 }
                     }
                 }
             });
         }
 
-        function setPlatform(plat) {
-            currentPlatform = plat;
-            if (plat === 'virtual') {
-                document.getElementById('btnPlatVirtual').className = 'px-3 py-1.5 text-xs font-bold rounded-l-lg bg-uagrm-red text-white';
-                document.getElementById('btnPlatPresencial').className = 'px-3 py-1.5 text-xs font-semibold rounded-r-lg bg-gray-700 text-gray-300';
-            } else {
-                document.getElementById('btnPlatVirtual').className = 'px-3 py-1.5 text-xs font-semibold rounded-l-lg bg-gray-700 text-gray-300';
-                document.getElementById('btnPlatPresencial').className = 'px-3 py-1.5 text-xs font-bold rounded-r-lg bg-blue-600 text-white';
+        function renderTables(materias) {
+            // Tabla Apertura (Bloque 1)
+            const b1Body = document.getElementById('tablaAperturaBody');
+            b1Body.innerHTML = materias.map(m => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-slate-900">${m.sigla}</td>
+                    <td class="p-3">${m.nombre}</td>
+                    <td class="p-3 text-slate-500">${m.carrera_nombre}</td>
+                    <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">Activa / Visible</span></td>
+                    <td class="p-3 text-center"><span class="text-emerald-600 font-bold"><i class="fa-solid fa-check"></i> Auditada</span></td>
+                    <td class="p-3 text-center"><span class="text-blue-600 font-bold"><i class="fa-solid fa-layer-group"></i> Mosaico 5.1</span></td>
+                </tr>
+            `).join('');
+
+            // Tabla Detallada
+            const dtBody = document.getElementById('tablaDetalleBody');
+            dtBody.innerHTML = materias.map(m => {
+                let badgeColor = m.semaforo === 'rojo' ? 'bg-rose-100 text-rose-800 border-rose-300' :
+                                 m.semaforo === 'amarillo' ? 'bg-amber-100 text-amber-800 border-amber-300' :
+                                 'bg-emerald-100 text-emerald-800 border-emerald-300';
+                return `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3 font-bold text-slate-900">${m.sigla}</td>
+                        <td class="p-3 font-medium">${m.nombre}</td>
+                        <td class="p-3 text-slate-500 truncate max-w-[140px]">${m.carrera_nombre}</td>
+                        <td class="p-3 text-center font-semibold">${m.nivel}</td>
+                        <td class="p-3 text-center font-bold">${m.inscritos}</td>
+                        <td class="p-3 text-center text-emerald-700 font-bold">${m.aprobados}</td>
+                        <td class="p-3 text-center text-emerald-700 font-bold">${m.pct_aprobados}%</td>
+                        <td class="p-3 text-center text-rose-700 font-bold">${m.reprobados}</td>
+                        <td class="p-3 text-center text-amber-700 font-bold">${m.segunda_instancia}</td>
+                        <td class="p-3 text-center text-purple-700 font-bold">${m.rep_cero}</td>
+                        <td class="p-3 text-center font-bold">${m.n_prom}</td>
+                        <td class="p-3 text-center">
+                            <span class="px-2 py-0.5 rounded border text-[10px] font-bold ${badgeColor}">
+                                ${m.semaforo_texto}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-uagrm-red', 'text-uagrm-red');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('border-uagrm-red', 'text-uagrm-red');
+                activeBtn.classList.remove('border-transparent', 'text-slate-500');
             }
         }
 
+        function onFacultadChange() {
+            const fac = document.getElementById('facultadSelect').value;
+            const carSelect = document.getElementById('carreraSelect');
+
+            // Filtrar las opciones del selector de carrera según la facultad elegida
+            const opciones = [
+                { id: 'all', fac: 'all', label: '[Todas las Carreras]' },
+                { id: '105-5', fac: 'FCCASGCF', label: '105-5 Contaduría Pública' },
+                { id: '157-1', fac: 'FCJPSRRII', label: '157-1 Derecho' },
+                { id: '159-2', fac: 'FCJPSRRII', label: '159-2 Trabajo Social' },
+                { id: '187-3', fac: 'FICCT', label: '187-3 Ingeniería Informática' },
+                { id: '187-4', fac: 'FICCT', label: '187-4 Ingeniería en Sistemas' }
+            ];
+
+            carSelect.innerHTML = opciones
+                .filter(o => fac === 'all' || o.fac === 'all' || o.fac === fac)
+                .map(o => `<option value="${o.id}" class="bg-slate-900">${o.label}</option>`)
+                .join('');
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            fetchData();
+        }
+
+        function refreshData() {
+            fetchData();
+        }
+
         function changeRole(role) {
-            const titles = {
-                'central': 'Dirección DEDTE Central',
-                'vicedecanato': 'Vicedecanato de Facultad (Cs. Jurídicas)',
+            const titleMap = {
+                'central': 'Coordinación DEDTE Central (Global)',
+                'vicedecanato': 'Vicedecanato Facultativo',
                 'dedtef': 'DEDTE Facultativo / UAGD',
-                'carrera': 'Dirección de Carrera (Derecho)',
-                'docente': 'Docente Titular (Guía Estudiantil)'
+                'carrera': 'Dirección de Carrera',
+                'docente': 'Docente Titular (Consulta)'
             };
-            document.getElementById('currentRoleTitle').innerText = titles[role] || 'Usuario Institucional';
+            document.getElementById('currentRoleTitle').innerText = titleMap[role] || 'Sesión UAGRM';
+            fetchData();
         }
 
-        function exportOfficialPDF() {
-            window.print();
-        }
+        function exportToExcel() {
+            if (!currentData || !currentData.materias_detalle) return;
+            const rows = currentData.materias_detalle.map(m => [
+                m.sigla, m.nombre, m.carrera_nombre, m.nivel, m.inscritos, m.aprobados, m.pct_aprobados,
+                m.reprobados, m.pct_reprobados, m.segunda_instancia, m.rep_cero, m.n_prom, m.np_aprob, m.np_repr_s0, m.semaforo_texto
+            ]);
 
-        function exportOfficialExcel() {
-            alert('Generando plantilla Excel oficial DEDTE bajo Resolución ICU N° 053/2023 con fórmulas embebidas...');
-        }
-
-        function openDemoModal() {
-            document.getElementById('demoModal').classList.remove('hidden');
-        }
-
-        function closeDemoModal() {
-            document.getElementById('demoModal').classList.add('hidden');
+            const header = ["Sigla", "Materia", "Carrera", "Nivel", "Inscritos", "Aprobados", "% Aprobados", "Reprobados", "% Reprobados", "Segunda Instancia", "Reprobados con Cero", "Promedio General", "Promedio Aprobados", "Promedio Reprobados Sin Cero", "Semáforo"];
+            let csvContent = "data:text/csv;charset=utf-8," + [header.join(";"), ...rows.map(e => e.join(";"))].join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Reporte_DEDTE_${document.getElementById('periodoSelect').value}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
-
-    <!-- MODAL DE ACCESOS Y CREDENCIALES DE DEMOSTRACIÓN -->
-    <div id="demoModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
-            <div class="bg-gradient-to-r from-uagrm-red to-red-800 px-6 py-4 text-white flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-xl text-amber-300"></i>
-                    <div>
-                        <h3 class="font-bold text-base">Cuentas y Accesos de Demostración</h3>
-                        <p class="text-xs text-red-100">UAGRM • DEDTE - Sistema Integral de Analítica y Moodle</p>
-                    </div>
-                </div>
-                <button onclick="closeDemoModal()" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
-            </div>
-            <div class="p-6 space-y-4">
-                <p class="text-xs text-gray-600">Credenciales activas para acceder a la plataforma <strong>Moodle LMS</strong> y comprobar los diferentes roles institucionales:</p>
-                <div class="space-y-2 text-xs">
-                    <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex justify-between items-center">
-                        <div>
-                            <span class="font-bold text-gray-900 block">👑 Administrador DEDTE Central</span>
-                            <span class="text-gray-500">Usuario: <code class="bg-gray-200 px-1 rounded text-red-700 font-bold">admin</code></span>
-                        </div>
-                        <span class="font-mono bg-white px-2 py-1 border rounded text-gray-700 font-bold">Uagrm.2026!</span>
-                    </div>
-                    <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex justify-between items-center">
-                        <div>
-                            <span class="font-bold text-gray-900 block">🏛️ Director de Carrera (Derecho)</span>
-                            <span class="text-gray-500">Usuario: <code class="bg-gray-200 px-1 rounded text-blue-700 font-bold">director_derecho</code></span>
-                        </div>
-                        <span class="font-mono bg-white px-2 py-1 border rounded text-gray-700 font-bold">Uagrm.2026!</span>
-                    </div>
-                    <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex justify-between items-center">
-                        <div>
-                            <span class="font-bold text-gray-900 block">👨‍🏫 Docente Titular [DER-101]</span>
-                            <span class="text-gray-500">Usuario: <code class="bg-gray-200 px-1 rounded text-green-700 font-bold">docente_demo</code></span>
-                        </div>
-                        <span class="font-mono bg-white px-2 py-1 border rounded text-gray-700 font-bold">Uagrm.2026!</span>
-                    </div>
-                    <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex justify-between items-center">
-                        <div>
-                            <span class="font-bold text-gray-900 block">🎓 Estudiante Demostrativo (Ana García)</span>
-                            <span class="text-gray-500">Usuario: <code class="bg-gray-200 px-1 rounded text-amber-700 font-bold">est001</code></span>
-                        </div>
-                        <span class="font-mono bg-white px-2 py-1 border rounded text-gray-700 font-bold">Uagrm.2026!</span>
-                    </div>
-                </div>
-
-                <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2">
-                    <i class="fa-solid fa-check-circle text-emerald-600 text-base"></i>
-                    <div>
-                        <strong>Respaldos Automáticos Diarios:</strong>
-                        <p class="text-[11px] text-emerald-700">Programados cada noche a las 02:00 AM (Retención: 7 días con rotación automática).</p>
-                    </div>
-                </div>
-
-                <div class="flex gap-2 pt-2">
-                    <a href="/moodle/login/index.php" target="_blank" class="flex-1 text-center bg-blue-800 hover:bg-blue-900 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow-sm">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Iniciar Sesión en Moodle
-                    </a>
-                    <button onclick="closeDemoModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-xl text-xs transition">
-                        Cerrar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
